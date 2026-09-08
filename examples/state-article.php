@@ -3,10 +3,16 @@
 declare(strict_types=1);
 
 use Patterns\State\Article\Article;
+use Patterns\State\Article\InMemoryTransitionLogger;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$article = new Article("This is a demo content");
+$logger = new InMemoryTransitionLogger();
+
+$article = new Article(
+    content: "This is a demo content",
+    logger: $logger
+);
 
 displayArticle($article);
 
@@ -33,6 +39,8 @@ displayArticle($article);
 $article->approve();
 
 displayArticle($article);
+
+print_r($logger->transitions());
 
 function displayArticle(Article $article)
 {

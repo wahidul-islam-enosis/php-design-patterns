@@ -12,7 +12,7 @@ final class DraftState implements ArticleState
     #[Override]
     public function edit(Article $article, string $content): void
     {
-        $article->content = $content;
+        $article->updateContent($content);
         $article->transitionTo(new DraftState());
     }
 

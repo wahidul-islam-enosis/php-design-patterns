@@ -9,7 +9,8 @@ final class Article
     private ArticleState $state;
 
     public function __construct(
-        public string $content
+        private string $content,
+        private TransitionLogger $logger
     ) {
         $this->state = new DraftState();
     }
@@ -41,7 +42,18 @@ final class Article
 
     public function transitionTo(ArticleState $state): void
     {
+        $fromState = $this->state->name();
         $this->state = $state;
+        $toState = $state->name();
+        $this->logger->record(
+            fromState: $fromState,
+            toState: $toState
+        );
+    }
+
+    public function updateContent(string $content): void
+    {
+        $this->content = $content;
     }
 
     public function __toString(): string
